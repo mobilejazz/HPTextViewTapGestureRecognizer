@@ -28,6 +28,8 @@
 
 -(void)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer handleTapOnTextAttachment:(NSTextAttachment*)textAttachment inRange:(NSRange)characterRange;
 
+-(void)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer handleTapOnTextAttachment:(NSTextAttachment*)textAttachment withURL: (NSURL *)url inRange:(NSRange)characterRange;
+
 @end
 
 @interface HPTextViewTapGestureRecognizer : UITapGestureRecognizer

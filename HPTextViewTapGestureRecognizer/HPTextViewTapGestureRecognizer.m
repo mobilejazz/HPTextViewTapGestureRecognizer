@@ -67,18 +67,26 @@
     }
     
     _textAttachment = [textView.attributedText attribute:NSAttachmentAttributeName atIndex:characterIndex effectiveRange:&_range];
-    if (_textAttachment)
+    _URL = [textView.attributedText attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:&_range];
+    
+    if (_textAttachment || _URL)
+    {
+        return;
+    }
+    _textAttachment = nil;
+    _URL = nil;
+    /* if (_textAttachment)
     {
         return;
     }
     _textAttachment = nil;
     
-    _URL = [textView.attributedText attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:&_range];
+    
     if (_URL)
     {
         return;
     }
-    _URL = nil;
+    _URL = nil; */
     
     self.state = UIGestureRecognizerStateFailed;
     return;
@@ -89,6 +97,15 @@
     [super setState:state];
     if (state == UIGestureRecognizerStateRecognized)
     {
+        if (_textAttachment && _URL)
+        {
+            if ([self.delegate respondsToSelector:@selector(gestureRecognizer:handleTapOnTextAttachment:withURL:inRange:)])
+            {
+                [self.delegate gestureRecognizer:self handleTapOnTextAttachment:_textAttachment withURL: _URL inRange:_range];
+            }
+            _textAttachment = nil;
+            _URL = nil;
+        }
         if (_textAttachment)
         {
             if ([self.delegate respondsToSelector:@selector(gestureRecognizer:handleTapOnTextAttachment:inRange:)])
